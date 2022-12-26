@@ -104,6 +104,8 @@ namespace ComputerManagementSystem
                     laptop.Price = this.EditLaptop(laptop.Price, "Price");
                     laptop.Quantity = this.EditLaptop(laptop.Quantity, "Quantity");
                     laptop.Battery = this.EditLaptop(laptop.Battery, "Battery");
+                    laptop.Brand = this.EditLaptop(laptop.Brand, "Brand ID", "Brand Name");
+                    laptop.Supplier = this.EditLaptop(laptop.Supplier, "Supplier ID", "Supplier Name");
                     break;
                 }
             }
@@ -112,6 +114,46 @@ namespace ComputerManagementSystem
                 Console.WriteLine("ID does not exist!");
                 Console.ReadKey();
             }
+        }
+
+        private Brand EditLaptop(Brand myValue, string IDValue, string nameValue)
+        {
+            Console.WriteLine($"{IDValue}: {myValue.Id}");
+            Console.WriteLine($"{nameValue}: {myValue.Name}");
+            string updateValue = Console.ReadLine();
+            if (updateValue.Length > 0)
+            {
+                int id = Convert.ToInt32(updateValue);
+                foreach (Brand brand in BrandMenu.brands)
+                {
+                    if (brand.Id == id)
+                    {
+                        myValue = brand;
+                        break;
+                    }
+                }
+            }
+            return myValue;
+        }
+
+        private Supplier EditLaptop(Supplier myValue, string IDValue, string nameValue)
+        {
+            Console.WriteLine($"{IDValue}: {myValue.Id}");
+            Console.WriteLine($"{nameValue}: {myValue.Name}");
+            string updateValue = Console.ReadLine();
+            if (updateValue.Length > 0)
+            {
+                int id = Convert.ToInt32(updateValue);
+                foreach (Supplier supplier in SupplierMenu.suppliers)
+                {
+                    if (supplier.Id == id)
+                    {
+                        myValue = supplier;
+                        break;
+                    }
+                }
+            }
+            return myValue;
         }
 
         private string EditLaptop(string myValue, string nameValue)

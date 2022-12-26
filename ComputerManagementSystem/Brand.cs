@@ -27,8 +27,17 @@ namespace ComputerManagementSystem
         }
         public void RemoveObserver(IObserver observer)
         {
-            observers.Add(observer);
+            observers.Remove(observer);
         }
+
+        /*public void RemoveObserverObject(IObserver observer)
+        {
+            foreach (var item in observers)
+            {
+                item.
+            }
+            observers.Add(observer);
+        }*/
 
         public int Id
         {
@@ -146,20 +155,52 @@ namespace ComputerManagementSystem
         {
             Console.Write("Enter id: ");
             int searchValue = Convert.ToInt32(Console.ReadLine());
-            bool flag = true;
+            //bool flag = true;
+            Brand deleteBrand = new Brand();
             foreach (Brand brand in brands)
             {
                 if (brand.Id == searchValue)
                 {
-                    flag = false;
-                    brands.Remove(brand);
-                    Console.WriteLine($"ID {brand.Id} was deleted!");
+                    /*flag = false;
+                    brands.Remove(brand);*/
+                    deleteBrand = brand;
                     break;
                 }
             }
-            if (flag)
+
+            if (deleteBrand == null)
             {
                 Console.WriteLine("ID does not exist!");
+            }
+            else
+            {
+                foreach (IObserver observer in deleteBrand.observers)
+                {
+                    if (observer is PC pC)
+                    {
+                        if (deleteBrand.Id == pC.Brand.Id)
+                        {
+                            PCMenu.pCs.Remove(pC);
+                        }
+                    }
+                    if (observer is Laptop laptop)
+                    {
+                        if (deleteBrand.Id == laptop.Brand.Id)
+                        {
+                            LaptopMenu.laptops.Remove(laptop);
+                        }
+                    }
+                }
+
+                /*foreach (PC pC in PCMenu.pCs)
+                {
+                    if (pC.Brand.Id == deleteBrand.Id)
+                    {
+                        PCMenu.pCs.Remove(pC);
+                    }
+                }*/
+                brands.Remove(deleteBrand);
+                Console.WriteLine($"ID {deleteBrand.Id} was deleted!");
             }
             Console.ReadKey();
         }

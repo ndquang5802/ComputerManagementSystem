@@ -199,6 +199,8 @@ namespace ComputerManagementSystem
                 if (pC.Id == searchValue)
                 {
                     flag = false;
+                    pC.Brand.RemoveObserver(pC);
+                    pC.Supplier.RemoveObserver(pC);
                     pCs.Remove(pC);
                     Console.WriteLine($"ID {pC.Id} was deleted!");
                     break;

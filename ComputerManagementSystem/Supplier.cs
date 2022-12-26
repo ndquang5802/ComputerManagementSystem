@@ -33,7 +33,7 @@ namespace ComputerManagementSystem
         }
         public void RemoveObserver(IObserver observer)
         {
-            observers.Add(observer);
+            observers.Remove(observer);
         }
 
         public int Id
