@@ -27,38 +27,50 @@ namespace ComputerManagementSystem
         }
         public string ChoiceMenu()
         {
-            Console.Write("Please choice: ");
-            int n = Convert.ToInt32(Console.ReadLine());
             string strMenu = "";
-            Laptop laptop = new Laptop();
-            switch (n)
+            try
             {
-                case 1:
-                    laptop.AddLaptop(laptops);
-                    strMenu = this.GetType();
-                    break;
-                case 2:
-                    laptop.UpdateLaptop(laptops);
-                    strMenu = this.GetType();
-                    break;
-                case 3:
-                    laptop.DeleteLaptop(laptops);
-                    strMenu = this.GetType();
-                    break;
-                case 4:
-                    laptop.SearchLaptop(laptops);
-                    strMenu = this.GetType();
-                    break;
-                case 5:
-                    laptop.ViewLaptop(laptops);
-                    strMenu = this.GetType();
-                    break;
-                case 6:
-                    strMenu = "Menu";
-                    break;
-                default:
-                    strMenu = "Invalid choice";
-                    break;
+                Console.Write("Please choice: ");
+                int n = Convert.ToInt32(Console.ReadLine());
+                Laptop laptop = new Laptop();
+
+                switch (n)
+                {
+                    case 1:
+                        laptop.AddLaptop(laptops);
+                        strMenu = this.GetType();
+                        break;
+                    case 2:
+                        laptop.UpdateLaptop(laptops);
+                        strMenu = this.GetType();
+                        break;
+                    case 3:
+                        laptop.DeleteLaptop(laptops);
+                        strMenu = this.GetType();
+                        break;
+                    case 4:
+                        laptop.SearchLaptop(laptops);
+                        strMenu = this.GetType();
+                        break;
+                    case 5:
+                        laptop.ViewLaptop(laptops);
+                        strMenu = this.GetType();
+                        break;
+                    case 6:
+                        strMenu = "Menu";
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        strMenu = this.GetType();
+                        Console.ReadKey();
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid choice!");
+                strMenu = this.GetType();
+                Console.ReadKey();
             }
             return strMenu;
         }

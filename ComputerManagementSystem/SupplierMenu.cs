@@ -27,38 +27,50 @@ namespace ComputerManagementSystem
         }
         public string ChoiceMenu()
         {
-            Console.Write("Please choice: ");
-            int n = Convert.ToInt32(Console.ReadLine());
             string strMenu = "";
-            Supplier supplier = new Supplier();
-            switch (n)
+            try
             {
-                case 1:
-                    supplier.AddSupplier(suppliers);
-                    strMenu = this.GetType();
-                    break;
-                case 2:
-                    supplier.UpdateSupplier(suppliers);
-                    strMenu = this.GetType();
-                    break;
-                case 3:
-                    supplier.DeleteSupplier(suppliers);
-                    strMenu = this.GetType();
-                    break;
-                case 4:
-                    supplier.SearchSupplier(suppliers);
-                    strMenu = this.GetType();
-                    break;
-                case 5:
-                    supplier.ViewSupplier(suppliers);
-                    strMenu = this.GetType();
-                    break;
-                case 6:
-                    strMenu = "Menu";
-                    break;
-                default:
-                    strMenu = "Invalid choice";
-                    break;
+                Console.Write("Please choice: ");
+                int n = Convert.ToInt32(Console.ReadLine());
+                Supplier supplier = new Supplier();
+
+                switch (n)
+                {
+                    case 1:
+                        supplier.AddSupplier(suppliers);
+                        strMenu = this.GetType();
+                        break;
+                    case 2:
+                        supplier.UpdateSupplier(suppliers);
+                        strMenu = this.GetType();
+                        break;
+                    case 3:
+                        supplier.DeleteSupplier(suppliers);
+                        strMenu = this.GetType();
+                        break;
+                    case 4:
+                        supplier.SearchSupplier(suppliers);
+                        strMenu = this.GetType();
+                        break;
+                    case 5:
+                        supplier.ViewSupplier(suppliers);
+                        strMenu = this.GetType();
+                        break;
+                    case 6:
+                        strMenu = "Menu";
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        strMenu = this.GetType();
+                        Console.ReadKey();
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid choice!");
+                strMenu = this.GetType();
+                Console.ReadKey();
             }
             return strMenu;
         }

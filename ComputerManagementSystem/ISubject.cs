@@ -10,5 +10,6 @@ namespace ComputerManagementSystem
     {
         void RegisterObserver(IObserver observer);
         void RemoveObserver(IObserver observer);
+        void NotifyRelevant(ISubject subject);
     }
 }

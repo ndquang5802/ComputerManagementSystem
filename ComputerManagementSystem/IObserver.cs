@@ -8,5 +8,6 @@ namespace ComputerManagementSystem
 {
     internal interface IObserver
     {
+        void update(Computer computer);
     }
 }

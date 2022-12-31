@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ComputerManagementSystem
 {
-    internal class Supplier
+    internal class Supplier : ISubject
     {
         private int id;
         private string name;
@@ -16,25 +16,6 @@ namespace ComputerManagementSystem
         private string email;
         private string address;
         private List<IObserver> observers = new List<IObserver>();
-
-        public Supplier(int id, string name, string telephone, string email, string address)
-        {
-            this.id = id;
-            this.name = name;
-            this.telephone = telephone;
-            this.email = email;
-            this.address = address;
-        }
-        public Supplier() { }
-
-        public void RegisterObserver(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-        public void RemoveObserver(IObserver observer)
-        {
-            observers.Remove(observer);
-        }
 
         public int Id
         {
@@ -54,7 +35,7 @@ namespace ComputerManagementSystem
             get => this.name;
             set
             {
-                if (value.ToString().Length == 0)
+                if (value.Length == 0)
                 {
                     throw new ArgumentException("Name can not be empty");
                 }
@@ -118,7 +99,7 @@ namespace ComputerManagementSystem
             get => this.address;
             set
             {
-                if (value.ToString().Length == 0)
+                if (value.Length == 0)
                 {
                     throw new ArgumentException("Address can not be empty");
                 }
@@ -126,14 +107,58 @@ namespace ComputerManagementSystem
             }
         }
 
+        public void RegisterObserver(IObserver observer)
+        {
+            observers.Add(observer);
+        }
+        public void RemoveObserver(IObserver observer)
+        {
+            observers.Remove(observer);
+        }
+
         public void AddSupplier(List<Supplier> suppliers)
         {
-            /*Supplier supplier = new Supplier();
+            Supplier supplier = new Supplier();
 
-            Console.Write("Enter id: ");
-            supplier.Id = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Enter name: ");
-            supplier.Name = Console.ReadLine();
+            //Check valid ID
+            Id:
+            try
+            {
+                Console.Write("Enter id: ");
+                int id = Convert.ToInt32(Console.ReadLine());
+                foreach (Supplier item in suppliers)
+                {
+                    if(item.Id == id)
+                    {
+                        Console.WriteLine("Supplier ID already exists");
+                        goto Id;
+                    }
+                }
+                supplier.Id = id;
+            }
+            catch (ArgumentException err)
+            {
+                Console.WriteLine(err.Message);
+                goto Id;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("ID must be a number can not empty!");
+                goto Id;
+            }
+            //Check valid name
+            Name:
+            try
+            {
+                Console.Write("Enter name: ");
+                supplier.Name = Console.ReadLine();
+            }
+            catch (ArgumentException err)
+            {
+                Console.WriteLine(err.Message);
+                goto Name;
+            }
+            //Check valid telephone
             Telephone:
             try
             {
@@ -145,7 +170,7 @@ namespace ComputerManagementSystem
                 Console.WriteLine(err.Message);
                 goto Telephone;
             }
-
+            //Check valid email
             Email:
             try
             {
@@ -157,13 +182,20 @@ namespace ComputerManagementSystem
                 Console.WriteLine(err.Message);
                 goto Email;
             }
-            Console.Write("Enter address: ");
-            supplier.Address = Console.ReadLine();
+            //Check valid address
+            Address:
+            try
+            {
+                Console.Write("Enter address: ");
+                supplier.Address = Console.ReadLine();
+            }
+            catch (ArgumentException err)
+            {
+                Console.WriteLine(err.Message);
+                goto Address;
+            }
 
-            suppliers.Add(supplier);*/
-
-            suppliers.Add(new Supplier(1023, "Mobile World", "0922645516", "mobileworld@gmail.com", "Can Tho city"));
-            suppliers.Add(new Supplier(1024, "Green Machine", "0323959498", "greenmachine@gmail.com", "Vinh Long city"));
+            suppliers.Add(supplier);
         }
 
         public void ViewSupplier(List<Supplier> suppliers)
@@ -177,47 +209,52 @@ namespace ComputerManagementSystem
                                       $"Telephone: {supplier.Telephone}\n" +
                                       $"Email: {supplier.Email}\n" +
                                       $"Address: {supplier.Address}\n");
-                    /*foreach (IObserver observer in supplier.observers)
-                    {
-                        Computer computer = observer as Computer;
-                        Console.WriteLine($"{computer.Name}");
-                    }*/
                 }
             }
             else
             {
-                Console.WriteLine("Brand list is empty!");
+                Console.WriteLine("Supplier list is empty!");
             }
             Console.ReadKey();
         }
 
         public void UpdateSupplier(List<Supplier> suppliers)
         {
-            Console.Write("Enter id: ");
-            int searchValue = Convert.ToInt32(Console.ReadLine());
-            bool flag = true;
-            foreach (Supplier supplier in suppliers)
+            Id:
+            try
             {
-                if (supplier.Id == searchValue)
+                Console.Write("Enter id: ");
+                int searchValue = Convert.ToInt32(Console.ReadLine());
+                bool flag = true;
+                foreach (Supplier supplier in suppliers)
                 {
-                    flag = false;
-                    supplier.Name = this.EditSupplier(supplier.Name, "Name");
-                    supplier.Telephone = this.EditSupplier(supplier.Telephone, "Telephone");
-                    supplier.Email = this.EditSupplier(supplier.Email, "Email");
-                    supplier.Address = this.EditSupplier(supplier.Address, "Address");
-                    break;
+                    if (supplier.Id == searchValue)
+                    {
+                        flag = false;
+                        supplier.Name = this.EditSupplier(supplier.Name, "Name");
+                        supplier.Telephone = this.EditSupplier(supplier.Telephone, "Telephone");
+                        supplier.Email = this.EditSupplier(supplier.Email, "Email");
+                        supplier.Address = this.EditSupplier(supplier.Address, "Address");
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    Console.WriteLine("ID does not exist!");
+                    Console.ReadKey();
                 }
             }
-            if (flag)
+            catch (FormatException)
             {
-                Console.WriteLine("ID does not exist!");
-                Console.ReadKey();
+                Console.WriteLine("ID must be a number can not empty!");
+                goto Id;
             }
         }
-
+            
         private string EditSupplier(string myValue, string nameValue)
         {
             Console.WriteLine($"{nameValue}: {myValue}");
+            Console.Write($"Enter new {nameValue}: ");
             string updateValue = Console.ReadLine();
             if (updateValue.Length > 0)
             {
@@ -226,51 +263,99 @@ namespace ComputerManagementSystem
             return myValue;
         }
 
-        public void DeleteSupplier(List<Supplier> suppliers)
-        {
-            Console.Write("Enter id: ");
-            int searchValue = Convert.ToInt32(Console.ReadLine());
-            bool flag = true;
-            foreach (Supplier supplier in suppliers)
-            {
-                if (supplier.Id == searchValue)
-                {
-                    flag = false;
-                    suppliers.Remove(supplier);
-                    Console.WriteLine($"ID {supplier.Id} was deleted!");
-                    break;
-                }
-            }
-            if (flag)
-            {
-                Console.WriteLine("ID does not exist!");
-            }
-            Console.ReadKey();
-        }
-
         public void SearchSupplier(List<Supplier> suppliers)
         {
-            Console.Write("Enter id: ");
-            int searchValue = Convert.ToInt32(Console.ReadLine());
-            bool flag = true;
-            foreach (Supplier supplier in suppliers)
+            Id:
+            try
             {
-                if (supplier.Id == searchValue)
+                Console.Write("Enter id: ");
+                int searchValue = Convert.ToInt32(Console.ReadLine());
+                bool flag = true;
+                foreach (Supplier supplier in suppliers)
                 {
-                    flag = false;
-                    Console.WriteLine($"ID: {supplier.Id}\n" +
-                                      $"Name: {supplier.Name}\n" +
-                                      $"Telephone: {supplier.Telephone}\n" +
-                                      $"Email: {supplier.Email}\n" +
-                                      $"Address: {supplier.Address}");
-                    break;
+                    if (supplier.Id == searchValue)
+                    {
+                        flag = false;
+                        Console.WriteLine($"ID: {supplier.Id}\n" +
+                                          $"Name: {supplier.Name}\n" +
+                                          $"Telephone: {supplier.Telephone}\n" +
+                                          $"Email: {supplier.Email}\n" +
+                                          $"Address: {supplier.Address}\n");
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    Console.WriteLine("ID does not exist!");
+                }
+                Console.ReadKey();
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("ID must be a number can not empty!");
+                goto Id;
+            }
+        }
+
+        public void DeleteSupplier(List<Supplier> suppliers)
+        {
+            Id:
+            try
+            {
+                Console.Write("Enter id: ");
+                int searchValue = Convert.ToInt32(Console.ReadLine());
+
+                Supplier deleteSupplier = null;
+                foreach (Supplier supplier in suppliers)
+                {
+                    if (supplier.Id == searchValue)
+                    {
+                        deleteSupplier = supplier;
+                        break;
+                    }
+                }
+
+                if (deleteSupplier == null)
+                {
+                    Console.WriteLine("ID does not exist!");
+                }
+                else
+                {
+                    NotifyRelevant(deleteSupplier);
+                    suppliers.Remove(deleteSupplier);
+                    Console.WriteLine($"Supplier ID {deleteSupplier.Id} was deleted!");
+                }
+                Console.ReadKey();
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("ID must be a number can not empty!");
+                goto Id;
+            }
+        }
+
+        public void NotifyRelevant(ISubject subject)
+        {
+            Supplier deleteSupplier = subject as Supplier;
+            foreach (IObserver observer in deleteSupplier.observers)
+            {
+                if (observer is PC pC)
+                {
+                    if (deleteSupplier.Id == pC.Supplier.Id)
+                    {
+                        observer.update(pC);
+                        PCMenu.pCs.Remove(pC);
+                    }
+                }
+                if (observer is Laptop laptop)
+                {
+                    if (deleteSupplier.Id == laptop.Supplier.Id)
+                    {
+                        observer.update(laptop);
+                        LaptopMenu.laptops.Remove(laptop);
+                    }
                 }
             }
-            if (flag)
-            {
-                Console.WriteLine("ID does not exist!");
-            }
-            Console.ReadKey();
         }
     }
 }

@@ -36,7 +36,7 @@ namespace ComputerManagementSystem
             get => this.name;
             set
             {
-                if (value.ToString().Length == 0)
+                if (value.Length == 0)
                 {
                     throw new ArgumentException("Name can not be empty");
                 }
@@ -49,7 +49,7 @@ namespace ComputerManagementSystem
             get => this.cpu;
             set
             {
-                if (value.ToString().Length == 0)
+                if (value.Length == 0)
                 {
                     throw new ArgumentException("CPU can not be empty");
                 }
@@ -127,6 +127,11 @@ namespace ComputerManagementSystem
                 this.supplier = value;
                 value.RegisterObserver(this);
             }
+        }
+
+        public void update(Computer computer)
+        {
+            Console.WriteLine($"Computer ID {computer.Id} was deleted!");
         }
     }
 }

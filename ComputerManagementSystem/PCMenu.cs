@@ -27,38 +27,50 @@ namespace ComputerManagementSystem
         }
         public string ChoiceMenu()
         {
-            Console.Write("Please choice: ");
-            int n = Convert.ToInt32(Console.ReadLine());
             string strMenu = "";
-            PC pC = new PC();
-            switch (n)
+            try
             {
-                case 1:
-                    pC.AddPC(pCs);
-                    strMenu = this.GetType();
-                    break;
-                case 2:
-                    pC.UpdatePC(pCs);
-                    strMenu = this.GetType();
-                    break;
-                case 3:
-                    pC.DeletePC(pCs);
-                    strMenu = this.GetType();
-                    break;
-                case 4:
-                    pC.SearchPC(pCs);
-                    strMenu = this.GetType();
-                    break;
-                case 5:
-                    pC.ViewPC(pCs);
-                    strMenu = this.GetType();
-                    break;
-                case 6:
-                    strMenu = "Menu";
-                    break;
-                default:
-                    strMenu = "Invalid choice";
-                    break;
+                Console.Write("Please choice: ");
+                int n = Convert.ToInt32(Console.ReadLine());
+                PC pC = new PC();
+
+                switch (n)
+                {
+                    case 1:
+                        pC.AddPC(pCs);
+                        strMenu = this.GetType();
+                        break;
+                    case 2:
+                        pC.UpdatePC(pCs);
+                        strMenu = this.GetType();
+                        break;
+                    case 3:
+                        pC.DeletePC(pCs);
+                        strMenu = this.GetType();
+                        break;
+                    case 4:
+                        pC.SearchPC(pCs);
+                        strMenu = this.GetType();
+                        break;
+                    case 5:
+                        pC.ViewPC(pCs);
+                        strMenu = this.GetType();
+                        break;
+                    case 6:
+                        strMenu = "Menu";
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        strMenu = this.GetType();
+                        Console.ReadKey();
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid choice!");
+                strMenu = this.GetType();
+                Console.ReadKey();
             }
             return strMenu;
         }
